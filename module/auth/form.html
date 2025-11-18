@@ -7,12 +7,17 @@
 
     <div id="password" data-import="/components/input/password.html"></div>
 
-    <div id="login-button" data-import="/components/button/index.html" onclick="clickMe()" data-label="How are you"></div>
+    <div id="login-button" data-import="/components/button/index.html" onclick="clickMe()" data-label="Go no where"></div>
+
+    <div id="login-button" data-import="/components/button/index.html" onclick="clickMe2()" data-label="Go to EmmsDan.com"></div>
     
 </form>
 
 <script>
     function clickMe(){
-        alert("Alert")
+        alert("I go no where")
+    }
+    function clickMe2(){
+        window.location.href = 'https://emmsdan.com'
     }
 </script>
