@@ -26,6 +26,7 @@ function renderComponents(elements){
       });
   }
 }
+
 const componentElements = document.querySelectorAll("[data-import]");
 renderComponents(componentElements)
 

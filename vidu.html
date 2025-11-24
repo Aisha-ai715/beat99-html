@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Big O Complexity Visualizer - Final</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f0f1e 0%, #1a1a2e 100%);
+            color: #e0e0e0;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            color: #fff;
+            margin-bottom: 20px;
+            font-size: 2.5em;
+            text-shadow: 0 0 20px rgba(100, 200, 255, 0.5);
+        }
+
+        .explanations {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .explanation-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .explanation-card {
+            padding: 12px;
+            border-radius: 8px;
+            border-left: 4px solid;
+            font-size: 13px;
+        }
+
+        .explanation-card strong {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+        }
+
+        .panel {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .graph-container {
+            height: 500px;
+            position: relative;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+        }
+
+        canvas {
+            width: 100%;
+            height: 100%;
+        }
+
+        .controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .algo-btn {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: white;
+            flex: 1;
+            min-width: 100px;
+        }
+
+        .algo-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+
+        .algo-btn.active {
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+            transform: scale(1.05);
+        }
+
+        .clear-btn {
+            background: linear-gradient(135deg, #666 0%, #333 100%);
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .o1 { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .ologn { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
+        .on { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
+        .onlogn { background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); }
+        .on2 { background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); }
+        .o2n { background: linear-gradient(135deg, #ff6b6b 0%, #ff0000 100%); }
+
+        .code-display {
+            background: #1a1a2e;
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 20px;
+            overflow-x: auto;
+            max-height: 250px;
+        }
+
+        .code-display h3 {
+            margin-bottom: 10px;
+            color: #4facfe;
+        }
+
+        .code-display pre {
+            color: #e0e0e0;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            line-height: 1.4;
+        }
+
+        .legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            font-size: 12px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .legend-color {
+            width: 15px;
+            height: 15px;
+            border-radius: 3px;
+        }
+
+        .performance-note {
+            text-align: center;
+            margin-top: 15px;
+            padding: 10px;
+            background: rgba(79, 172, 254, 0.1);
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 Big O Complexity Visualizer</h1>
+        
+        <div class="explanations">
+            <h3 style="margin-bottom: 15px; text-align: center;">📚 What These Mean in Plain English</h3>
+            <div class="explanation-grid">
+                <div class="explanation-card" style="background: rgba(102, 126, 234, 0.15); border-color: #667eea;">
+                    <strong>O(1) - Constant</strong>
+                    ⚡ Like opening a book to a bookmarked page. Instant! Doesn't matter if the book has 10 or 10,000 pages.
+                </div>
+                <div class="explanation-card" style="background: rgba(240, 147, 251, 0.15); border-color: #f093fb;">
+                    <strong>O(log n) - Logarithmic</strong>
+                    🔍 Like finding a word in a dictionary. You keep splitting in half. 1,000 pages? Only 10 checks needed!
+                </div>
+                <div class="explanation-card" style="background: rgba(79, 172, 254, 0.15); border-color: #4facfe;">
+                    <strong>O(n) - Linear</strong>
+                    📖 Like reading a book cover to cover. Twice as many pages = twice as long. Simple and predictable.
+                </div>
+                <div class="explanation-card" style="background: rgba(67, 233, 123, 0.15); border-color: #43e97b;">
+                    <strong>O(n log n) - Linearithmic</strong>
+                    📊 Like sorting cards by dividing into piles. Pretty efficient. Most good sorting uses this.
+                </div>
+                <div class="explanation-card" style="background: rgba(250, 112, 154, 0.15); border-color: #fa709a;">
+                    <strong>O(n²) - Quadratic</strong>
+                    🐌 Like comparing everyone with everyone at a party. 10 people = 100 comparisons. 100 people = 10,000!
+                </div>
+                <div class="explanation-card" style="background: rgba(255, 107, 107, 0.15); border-color: #ff6b6b;">
+                    <strong>O(2^n) - Exponential</strong>
+                    💥 Like guessing a password. Each new character doubles the time. Becomes impossible FAST!
+                </div>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="panel">
+                <h2>Performance Visualization</h2>
+                <div class="graph-container">
+                    <canvas id="graphCanvas"></canvas>
+                </div>
+                <div class="legend" id="legend"></div>
+                <div class="performance-note" id="perfNote">
+                    Click algorithms below to see how they scale with input size
+                </div>
+            </div>
+
+            <div class="panel">
+                <h2>Controls</h2>
+                <div class="controls">
+                    <button class="algo-btn o1" onclick="toggleAlgorithm('O(1)')">O(1)</button>
+                    <button class="algo-btn ologn" onclick="toggleAlgorithm('O(log n)')">O(log n)</button>
+                    <button class="algo-btn on" onclick="toggleAlgorithm('O(n)')">O(n)</button>
+                    <button class="algo-btn onlogn" onclick="toggleAlgorithm('O(n log n)')">O(n log n)</button>
+                    <button class="algo-btn on2" onclick="toggleAlgorithm('O(n²)')">O(n²)</button>
+                    <button class="algo-btn o2n" onclick="toggleAlgorithm('O(2^n)')">O(2^n)</button>
+                    <button class="algo-btn clear-btn" onclick="clearAll()">Clear All</button>
+                </div>
+
+                <div class="code-display">
+                    <h3>T-SQL Example</h3>
+                    <pre id="codeContent">Select algorithms above to see their SQL equivalents...</pre>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const algorithms = {
+            'O(1)': {
+                name: 'Constant',
+                color: '#667eea',
+                code: `-- PRIMARY KEY LOOKUP
+SELECT * FROM Users 
+WHERE UserID = 12345;
+
+-- With clustered index:
+-- 1 row: instant
+-- 1 million rows: instant
+-- 1 billion rows: instant`,
+                calculate: (n) => 1
+            },
+            'O(log n)': {
+                name: 'Logarithmic',
+                color: '#f093fb',
+                code: `-- INDEX SEEK
+SELECT * FROM Orders 
+WHERE OrderDate = '2024-01-15'
+  AND Status = 'Active';
+
+-- B-tree index traversal:
+-- 1,000 rows: ~10 steps
+-- 1,000,000 rows: ~20 steps
+-- 1,000,000,000 rows: ~30 steps`,
+                calculate: (n) => Math.log2(Math.max(1, n))
+            },
+            'O(n)': {
+                name: 'Linear',
+                color: '#4facfe',
+                code: `-- TABLE SCAN
+SELECT * FROM Customers 
+WHERE LOWER(Notes) LIKE '%important%';
+
+-- No index possible (function on column):
+-- Must check every single row
+-- 2x rows = 2x time`,
+                calculate: (n) => n
+            },
+            'O(n log n)': {
+                name: 'Linearithmic',
+                color: '#43e97b',
+                code: `-- SORT OPERATION
+SELECT CustomerID, 
+       SUM(Amount) as Total
+FROM Orders 
+GROUP BY CustomerID
+ORDER BY Total DESC;
+
+-- Efficient merge/quick sort
+-- Better than O(n²) sorting`,
+                calculate: (n) => n * Math.log2(Math.max(1, n))
+            },
+            'O(n²)': {
+                name: 'Quadratic',
+                color: '#fa709a',
+                code: `-- SELF JOIN / CROSS JOIN
+SELECT a.*, b.*
+FROM Customers a
+CROSS JOIN Customers b
+WHERE a.City = b.City
+  AND a.ID != b.ID;
+
+-- Every row with every other:
+-- 100 rows: 10,000 operations
+-- 1,000 rows: 1,000,000 operations`,
+                calculate: (n) => n * n
+            },
+            'O(2^n)': {
+                name: 'Exponential',
+                color: '#ff6b6b',
+                code: `-- ALL COMBINATIONS
+-- Finding all subsets
+-- NEVER DO THIS!
+
+-- 10 items: 1,024 combinations
+-- 20 items: 1,048,576 combinations
+-- 30 items: 1,073,741,824 combinations
+
+-- System will crash!`,
+                calculate: (n) => Math.pow(2, n)
+            }
+        };
+
+        let activeAlgorithms = new Set(['O(n)', 'O(n²)']);
+        let lastSelectedAlgorithm = 'O(n)';
+        
+        const canvas = document.getElementById('graphCanvas');
+        const ctx = canvas.getContext('2d');
+
+        function resizeCanvas() {
+            const container = canvas.parentElement;
+            canvas.width = container.clientWidth - 40;
+            canvas.height = container.clientHeight - 40;
+            drawGraph();
+        }
+
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        function clearAll() {
+            activeAlgorithms.clear();
+            document.querySelectorAll('.algo-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            drawGraph();
+            updatePerformanceNote();
+        }
+
+        function toggleAlgorithm(complexity) {
+            if (activeAlgorithms.has(complexity)) {
+                activeAlgorithms.delete(complexity);
+            } else {
+                activeAlgorithms.add(complexity);
+                lastSelectedAlgorithm = complexity;
+                showCode(complexity);
+            }
+            
+            // Update button states
+            document.querySelectorAll('.algo-btn').forEach(btn => {
+                if (btn.textContent === complexity) {
+                    if (activeAlgorithms.has(complexity)) {
+                        btn.classList.add('active');
+                    } else {
+                        btn.classList.remove('active');
+                    }
+                }
+            });
+            
+            drawGraph();
+            updatePerformanceNote();
+        }
+
+        function showCode(complexity) {
+            const algo = algorithms[complexity];
+            document.getElementById('codeContent').textContent = algo.code;
+        }
+
+        function updatePerformanceNote() {
+            const note = document.getElementById('perfNote');
+            if (activeAlgorithms.size === 0) {
+                note.innerHTML = 'Click algorithms above to see how they scale with input size';
+            } else if (activeAlgorithms.has('O(2^n)')) {
+                note.innerHTML = '⚠️ <strong>Warning:</strong> O(2^n) grows so fast it becomes impossible after just 20-30 items!';
+                note.style.background = 'rgba(255, 107, 107, 0.2)';
+            } else if (activeAlgorithms.has('O(n²)')) {
+                note.innerHTML = '📈 Notice how O(n²) curves up dramatically compared to O(n)';
+                note.style.background = 'rgba(250, 112, 154, 0.2)';
+            } else {
+                note.innerHTML = `Showing ${activeAlgorithms.size} algorithm${activeAlgorithms.size > 1 ? 's' : ''}`;
+                note.style.background = 'rgba(79, 172, 254, 0.1)';
+            }
+        }
+
+        function drawGraph() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            if (activeAlgorithms.size === 0) {
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
+                ctx.font = '18px Arial';
+                ctx.textAlign = 'center';
+                ctx.fillText('Select algorithms above to compare', canvas.width / 2, canvas.height / 2);
+                return;
+            }
+            
+            const padding = 60;
+            const graphWidth = canvas.width - 2 * padding;
+            const graphHeight = canvas.height - 2 * padding;
+            
+            // Generate many points for smooth curves
+            const maxN = 100;
+            const points = [];
+            
+            // More points for smoother curves
+            for (let i = 1; i <= maxN; i++) {
+                points.push(i);
+            }
+            
+            // Calculate the maximum value for scaling
+            let maxValue = 0;
+            const hasExponential = activeAlgorithms.has('O(2^n)');
+            
+            activeAlgorithms.forEach(complexity => {
+                const algo = algorithms[complexity];
+                // For exponential, limit to n=20 for visualization
+                const maxPoint = complexity === 'O(2^n)' ? 20 : maxN;
+                for (let n = 1; n <= maxPoint; n++) {
+                    const value = algo.calculate(n);
+                    // Cap exponential for visualization
+                    if (complexity === 'O(2^n)' && n > 20) continue;
+                    maxValue = Math.max(maxValue, value);
+                }
+            });
+            
+            // Use log scale if range is too large
+            const useLogScale = maxValue > 1000;
+            
+            // Draw axes
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(padding, padding);
+            ctx.lineTo(padding, canvas.height - padding);
+            ctx.lineTo(canvas.width - padding, canvas.height - padding);
+            ctx.stroke();
+            
+            // Draw grid lines
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)';
+            ctx.lineWidth = 1;
+            
+            // Horizontal grid lines
+            for (let i = 0; i <= 10; i++) {
+                const y = padding + (i / 10) * graphHeight;
+                ctx.beginPath();
+                ctx.moveTo(padding, y);
+                ctx.lineTo(canvas.width - padding, y);
+                ctx.stroke();
+            }
+            
+            // Vertical grid lines
+            for (let i = 0; i <= 10; i++) {
+                const x = padding + (i / 10) * graphWidth;
+                ctx.beginPath();
+                ctx.moveTo(x, padding);
+                ctx.lineTo(x, canvas.height - padding);
+                ctx.stroke();
+            }
+            
+            // Draw labels
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
+            ctx.font = '11px Arial';
+            
+            // X-axis labels
+            ctx.textAlign = 'center';
+            for (let i = 0; i <= 10; i++) {
+                const value = (i / 10) * maxN;
+                const x = padding + (i / 10) * graphWidth;
+                ctx.fillText(Math.round(value).toString(), x, canvas.height - padding + 20);
+            }
+            
+            // Y-axis labels
+            ctx.textAlign = 'right';
+            for (let i = 0; i <= 5; i++) {
+                const y = padding + (i / 5) * graphHeight;
+                let value = maxValue * (1 - i / 5);
+                
+                let label;
+                if (useLogScale && value > 0) {
+                    // Use log scale labeling
+                    if (value >= 1000000) {
+                        label = `${(value / 1000000).toFixed(0)}M`;
+                    } else if (value >= 1000) {
+                        label = `${(value / 1000).toFixed(0)}K`;
+                    } else {
+                        label = value.toFixed(0);
+                    }
+                } else {
+                    label = value > 100 ? value.toFixed(0) : value.toFixed(1);
+                }
+                
+                ctx.fillText(label, padding - 10, y + 4);
+            }
+            
+            // Axis labels
+            ctx.font = '12px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('Input Size (n)', canvas.width / 2, canvas.height - 15);
+            
+            ctx.save();
+            ctx.translate(15, canvas.height / 2);
+            ctx.rotate(-Math.PI / 2);
+            ctx.fillText(useLogScale ? 'Operations (log scale)' : 'Operations', 0, 0);
+            ctx.restore();
+            
+            // Draw curves
+            activeAlgorithms.forEach(complexity => {
+                const algo = algorithms[complexity];
+                
+                ctx.strokeStyle = algo.color;
+                ctx.lineWidth = 2.5;
+                ctx.shadowColor = algo.color;
+                ctx.shadowBlur = 8;
+                
+                ctx.beginPath();
+                let firstPoint = true;
+                
+                const maxPoint = complexity === 'O(2^n)' ? Math.min(20, maxN) : maxN;
+                
+                for (let n = 1; n <= maxPoint; n++) {
+                    const x = padding + ((n - 1) / (maxN - 1)) * graphWidth;
+                    const value = algo.calculate(n);
+                    
+                    let normalizedY;
+                    if (useLogScale && value > 0) {
+                        // Logarithmic scaling for Y axis
+                        const logValue = Math.log10(value + 1);
+                        const logMax = Math.log10(maxValue + 1);
+                        normalizedY = logValue / logMax;
+                    } else {
+                        normalizedY = value / maxValue;
+                    }
+                    
+                    const y = canvas.height - padding - (normalizedY * graphHeight);
+                    
+                    if (firstPoint) {
+                        ctx.moveTo(x, y);
+                        firstPoint = false;
+                    } else {
+                        ctx.lineTo(x, y);
+                    }
+                }
+                
+                ctx.stroke();
+                ctx.shadowBlur = 0;
+                
+                // Add dots at key points for visibility
+                ctx.fillStyle = algo.color;
+                const keyPoints = complexity === 'O(2^n)' ? [1, 5, 10, 15, 20] : [1, 25, 50, 75, 100];
+                keyPoints.forEach(n => {
+                    if (n > maxPoint) return;
+                    
+                    const x = padding + ((n - 1) / (maxN - 1)) * graphWidth;
+                    const value = algo.calculate(n);
+                    
+                    let normalizedY;
+                    if (useLogScale && value > 0) {
+                        const logValue = Math.log10(value + 1);
+                        const logMax = Math.log10(maxValue + 1);
+                        normalizedY = logValue / logMax;
+                    } else {
+                        normalizedY = value / maxValue;
+                    }
+                    
+                    const y = canvas.height - padding - (normalizedY * graphHeight);
+                    
+                    ctx.beginPath();
+                    ctx.arc(x, y, 4, 0, Math.PI * 2);
+                    ctx.fill();
+                });
+            });
+            
+            // Update legend
+            updateLegend();
+        }
+
+        function updateLegend() {
+            const legendDiv = document.getElementById('legend');
+            let html = '';
+            
+            activeAlgorithms.forEach(complexity => {
+                const algo = algorithms[complexity];
+                html += `
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: ${algo.color}"></div>
+                        <span>${complexity} - ${algo.name}</span>
+                    </div>
+                `;
+            });
+            
+            legendDiv.innerHTML = html;
+        }
+
+        // Initialize
+        document.querySelectorAll('.algo-btn').forEach(btn => {
+            if (activeAlgorithms.has(btn.textContent)) {
+                btn.classList.add('active');
+            }
+        });
+        
+        drawGraph();
+        updatePerformanceNote();
+        showCode('O(n)');
+    </script>
+</body>
+</html>
