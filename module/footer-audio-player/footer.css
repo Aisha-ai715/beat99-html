@@ -3,10 +3,11 @@
     background-color: #2A2C34;
     padding: 0 var(--padding-block);
     height: 100%;
+    flex-wrap: wrap;
 }
 
 .footer-audio-player__info {
-    width: 320px;
+    width: 240px;
     height: 100%;
     display: flex;
     gap: 0.6rem;
@@ -15,10 +16,10 @@
 }
 .footer-audio-player__progress-actions {
     flex: 1;
-    background-color: aquamarine;
+        padding: 0.5rem 0;
 }
 .footer-audio-player__volumn-action {
-    max-width: 320px;
+    max-width: 250px;
 }
 
 .footer-audio-player__info img {
@@ -40,4 +41,46 @@
     font-weight: 400;
     font-size: 0.8rem;
     color: #bbbec4;
+}
+
+
+
+/* Handle audio control */
+.progress-actions__controls, 
+.footer-audio-player__volumn-action {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+}
+.footer-audio-player__volumn-action svg,
+.progress-actions__controls svg {
+    width: 20px;
+    height: 20px;
+    box-sizing: border-box;
+    cursor: pointer;
+    color: #bbbec4;
+}
+svg.__controls--filled {
+    fill: #bbbec4;
+}
+svg.__controls--filled:hover {
+    fill: #E4E8EC
+}
+
+.progress-actions__controls svg:hover {
+    color: #E4E8EC
+}
+
+.footer-audio-player__progress-actions-timer {
+        width: 100%;
+    justify-content: space-between;
+    display: flex;
+    padding: 5px;
+    color: #94969b;
+    font-size: 13px;
+}
+.footer-audio-player__volumn-action {
+    gap: 0.5rem;
+    padding-left: 1rem;
 }

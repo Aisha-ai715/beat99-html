@@ -1,24 +1,37 @@
 <link rel="stylesheet" href="/module/footer-audio-player/footer.css" />
 <section class="footer-audio-player">
-    <div class="footer-audio-player__info">
-        <img src="https://images.unsplash.com/photo-1652094669838-1b094db8351c?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" />
-        <div class="footer-audio-player__info_data">
-            <strong>Hand To Hold On To </strong>
-            <span>Jumkd sdfd sd</span>
-        </div>
+  <div class="footer-audio-player__info">
+    <img
+      src="https://images.unsplash.com/photo-1652094669838-1b094db8351c?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+    />
+    <div class="footer-audio-player__info_data">
+      <strong>Hand To Hold On To </strong>
+      <span>Jumkd sdfd sd</span>
     </div>
+  </div>
 
-    <div class="footer-audio-player__progress-actions">
-        <div>icons</div>
-        <div>
-        <div>
-            <time>01.00</time>
-            <time>10.00</time>
-        </div>
-            <progress></progress>
-        </div>
+  <div class="footer-audio-player__progress-actions">
+    <div class="progress-actions__controls">
+      <i id="shuffle" data-lucide="shuffle"></i>
+      <i id="prev" data-lucide="arrow-left-to-line"></i>
+      <i id="play" class="__controls--filled" data-lucide="play"></i>
+      <i id="pause" class="__controls--filled hidden" data-lucide="pause"></i>
+      <i id="next" data-lucide="arrow-right-to-line"></i>
+      <i id="repeat" data-lucide="repeat-2"></i>
     </div>
-    <div class="footer-audio-player__volumn-action">
-        volumn section
+    <div>
+      <div class="footer-audio-player__progress-actions-timer">
+        <time id="audioTimerStart">01.00</time>
+        <time id="audioTimerEnd">10.00</time>
+      </div>
+      <progress id="audioProgressBar" class="footer-audio-player__progress-actions-timer"></progress>
     </div>
+  </div>
+  <div class="footer-audio-player__volumn-action">
+      <i id="audioPlayerOption" data-lucide="logs"></i>
+      <i id="volumeOn"  class="__controls--filled" data-lucide="volume-2"></i>
+      <i id="volumeOff" class="__controls--filled hidden" data-lucide="volume-off"></i>
+      <i id="snooze" data-lucide="alarm-clock-off"></i>
+    
+  </div>
 </section>
