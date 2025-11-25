@@ -1,35 +1,61 @@
 const songs = [
     {
-        title: "Only the Good Die Young",
-        description: "Late Classic Rock",
+        name: "Hand To Hold On To",
+        artist: "Late Classic Rock",
         date: new Date().toISOString(),
-        image: "https://source.unsplash.com/random/?music,music+1",
-        music: "//m4a-64.jango.com/03/56/78/0356785856.m4a",
-        musicUrlSchema: "//m4a-64.jango.com/03/56/78/0356785856.m4a",
+        imageUrl: "https://album1.cdn107.com/50/d6/50d6b230f904abf17646b11db6c2969e_xl.jpg",
+        url: "//m4a-64.jango.com/03/56/78/0356785856.m4a",
     },
     {
-        title: "Hand To Hold On To",
-        description: "Late Classic Rock",
+        name: "Hit from the 80ths",
+        artist: "Late Classic Rock",
         date: new Date().toISOString(),
-        image: "https://album1.cdn107.com/50/d6/50d6b230f904abf17646b11db6c2969e_xl.jpg",
-        music: "//mp3-128.jango.com/music/18/36/28/1836282466.mp3",
-        musicUrlSchema: "//m4a-64.jango.com/03/56/78/0356785856.m4a",
-    },
-    {
-        title: "Hit from the 80ths",
-        description: "Late Classic Rock",
-        date: new Date().toISOString(),
-        image: "https://album99.cdn107.com/09/ad/09ad170615ebfe3f586b92423961b282_xl.jpg",
+        imageUrl: "https://album99.cdn107.com/09/ad/09ad170615ebfe3f586b92423961b282_xl.jpg",
         music: "https://m4a-64.jango.com/09/49/50/0949505878.m4a",
-        musicUrlSchema: "https://m4a-64.jango.com/09/49/50/0949505878.m4a",
+        url: "https://m4a-64.jango.com/09/49/50/0949505878.m4a",
+    },
+     {
+        name: "It's happy Holiday",
+        artist: "Madonna",
+        url: "https://m4a-64.jango.com/04/39/29/0439295284.m4a",
+        imageUrl: "https://album99.cdn107.com/09/ad/09ad170615ebfe3f586b92423961b282_xl.jpg"
+    },
+    {
+        name: "Tell It to My Heart",
+        artist: "Taylor Dayne",
+        url: "https://m4a-64.jango.com/07/46/13/0746130727.m4a",
+        imageUrl: "https://artist99.cdn107.com/77c/77c0d9f44a91400c0acd7d162185919b_xl.jpg"
+    },
+    {
+        name: "Playing With The Boys",
+        artist: "Kenny Loggins",
+        url: "https://mp3-128.jango.com/music/07/05/87/0705871972.mp3",
+        imageUrl: "https://artist99.cdn107.com/ce8/ce85ebe0ec658edcd7178684a82ed348_xl.jpg"
     },
 ]
 
 
+function formatSeconds(totalSeconds) {
+    // 1. Calculate Hours, Minutes, and final Seconds
+    const hours = Math.floor(totalSeconds / 3600);
+    const remainingSeconds = totalSeconds % 3600;
+    const minutes = Math.floor(remainingSeconds / 60);
+    const seconds = Math.floor(remainingSeconds % 60);
 
-const name = 12 // number
-const name2 = '12' // string
-const name3 = "12" // string
-const name4 = `12` // string
-const name5 = [1,2,3] // array
-const name6 = { name: "John" } // object
+    // Helper function for padding minutes/seconds with a leading zero
+    const pad = (num) => String(num).padStart(2, '0');
+
+    // 2. Conditional Formatting Logic
+
+    if (hours > 0) {
+        // Format: H:MM:SS (Hours is present)
+        return `${hours}:${pad(minutes)}:${pad(seconds)}`;
+    } else if (minutes > 0) {
+        // Format: M:SS (Hours is absent, Minutes is present)
+        return `${minutes}:${pad(seconds)}`;
+    } else {
+        // Format: S (Only Seconds is present)
+        // No padding for this simple seconds-only display
+        return pad(seconds);
+    }
+}

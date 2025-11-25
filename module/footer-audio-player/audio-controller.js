@@ -9,20 +9,26 @@ const volumeOn = document.getElementById('volumeOn')
 const volumeOff = document.getElementById('volumeOff')
 const snooze = document.getElementById('snooze')
 
+const audioElement = document.getElementById('theSong')
+const audioTimerStart = document.getElementById('audioTimerStart')
+const audioTimerEnd = document.getElementById('audioTimerEnd')
+
 const audioPlayerSongCover = document.getElementById('audioPlayerSongCover')
 const audioPlayerSongTitle = document.getElementById('audioPlayerSongTitle')
 const audioPlayerSongArtistName = document.getElementById('audioPlayerSongArtistName')
 
 
+
 play.addEventListener('click', ()=>{
     play.classList.toggle('hidden')
     pause.classList.toggle('hidden')
-    updateSongInfo()
+    audioElement.play()
 })
 
 pause.addEventListener('click', ()=>{
     play.classList.toggle('hidden')
     pause.classList.toggle('hidden')
+    audioElement.pause()
 })
 
 
@@ -35,3 +41,9 @@ prev.addEventListener('click', ()=>{
     console.log("called prev")
     playPrevMusic()
 })
+
+audioElement.addEventListener('timeupdate', ()=>{
+    console.log("called prev")
+    getDuration()
+})
+

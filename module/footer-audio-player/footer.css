@@ -89,3 +89,6 @@ svg.__controls--filled:hover {
     padding-left: 1rem;
     justify-content: end;
 }
+audio {
+    display: none;
+}
