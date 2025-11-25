@@ -23,7 +23,10 @@ function renderComponents(elements){
       })
       .catch(() => {
         element.innerHTML = `<h4>Component not found</h4>`;
-      });
+      })
+      .finally(()=>{
+            lucide.createIcons();
+      })
   }
 }
 
