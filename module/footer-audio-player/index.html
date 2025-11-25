@@ -3,10 +3,11 @@
   <div class="footer-audio-player__info">
     <img
       src="https://images.unsplash.com/photo-1652094669838-1b094db8351c?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+      id="audioPlayerSongCover"
     />
     <div class="footer-audio-player__info_data">
-      <strong>Hand To Hold On To </strong>
-      <span>Jumkd sdfd sd</span>
+      <strong id="audioPlayerSongTitle">Hand To Hold On To </strong>
+      <span id="audioPlayerSongArtistName">Jumkd sdfd sd</span>
     </div>
   </div>
 
@@ -16,7 +17,9 @@
       <i id="prev" data-lucide="arrow-left-to-line"></i>
       <i id="play" class="__controls--filled" data-lucide="play"></i>
       <i id="pause" class="__controls--filled hidden" data-lucide="pause"></i>
+      
       <i id="next" data-lucide="arrow-right-to-line"></i>
+
       <i id="repeat" data-lucide="repeat-2"></i>
     </div>
     <div>
@@ -35,3 +38,5 @@
     
   </div>
 </section>
+<script src="/module/footer-audio-player/audio-controller.js"></script>
+<script src="/module/footer-audio-player/audio.js"></script>

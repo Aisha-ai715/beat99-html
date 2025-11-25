@@ -4,10 +4,12 @@
     padding: 0 var(--padding-block);
     height: 100%;
     flex-wrap: wrap;
+    justify-content: space-between;
 }
 
 .footer-audio-player__info {
-    width: 240px;
+     min-width: 250px;
+    flex: 1;
     height: 100%;
     display: flex;
     gap: 0.6rem;
@@ -17,9 +19,11 @@
 .footer-audio-player__progress-actions {
     flex: 1;
         padding: 0.5rem 0;
+        max-width: 700px;
 }
 .footer-audio-player__volumn-action {
-    max-width: 250px;
+    min-width: 250px;
+    flex: 1;
 }
 
 .footer-audio-player__info img {
@@ -81,6 +85,7 @@ svg.__controls--filled:hover {
     font-size: 13px;
 }
 .footer-audio-player__volumn-action {
-    gap: 0.5rem;
+    /* gap: 0.5rem; */
     padding-left: 1rem;
+    justify-content: end;
 }
